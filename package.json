@@ -1,0 +1,25 @@
+{
+  "name": "apparatus",
+  "version": "0.0.1",
+  "description": "Small app for managing company devices",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kronicker/apparatus.git"
+  },
+  "keywords": [
+    "apparatus",
+    "device",
+    "company",
+    "manage"
+  ],
+  "author": "kronicker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kronicker/apparatus/issues"
+  },
+  "homepage": "https://github.com/kronicker/apparatus#readme"
+}
