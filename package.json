@@ -1,6 +1,9 @@
 {
   "name": "apparatus",
   "version": "0.0.1",
+  "engines": {
+    "node": "8.x"
+  },
   "description": "Small app for managing company devices",
   "main": "server/index.js",
   "scripts": {
