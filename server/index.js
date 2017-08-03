@@ -1,7 +1,8 @@
 const config = require('config');
 const express = require('express');
 
-const { serverLogger: log } = require('./logger');
+const db = require('./db');
+const log = require('./logger').serverLogger;
 
 const app = express();
 
