@@ -28,5 +28,8 @@
   "devDependencies": {
     "eslint": "^4.3.0",
     "eslint-config-eslint": "^4.0.0"
+  },
+  "dependencies": {
+    "config": "^1.26.1"
   }
 }
