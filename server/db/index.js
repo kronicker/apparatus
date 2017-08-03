@@ -6,7 +6,6 @@ const Sequelize = require('sequelize');
 const log = require('../logger').serverLogger;
 
 const { dialect, host, user, password, name, pool } = dbConfig;
-
 const db = {
   Sequelize,
   sequelize: new Sequelize(name, user, password, { host, dialect, pool }),
@@ -26,19 +25,11 @@ fs.readdirSync(__dirname)
   .map(model => model.associate(db.models));
 
 db.sequelize.authenticate()
-  .then(() => {
-    log.info('Connection to database has been established successfully.');
-  })
-  .catch(err => {
-    log.error('Unable to connect to the database:', err);
-  });
+  .then(() => log.info('Connection to database has been established successfully.'))
+  .catch(err => log.error('Unable to connect to the database:', err));
 
 db.sequelize.sync()
-  .then(() => {
-    log.info('Tables synced successfully.');
-  })
-  .catch(err => {
-    log.error('Unable to sync database tables:', err);
-  });
+  .then(() => log.info('Tables synced successfully.'))
+  .catch(err => log.error('Unable to sync database tables:', err));
 
 module.exports = db;
