@@ -33,7 +33,9 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
+    "bunyan": "^1.8.12",
     "config": "^1.26.1",
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "mysql": "^2.14.1"
   }
 }
