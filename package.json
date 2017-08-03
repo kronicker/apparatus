@@ -1,0 +1,36 @@
+{
+  "name": "apparatus",
+  "version": "0.0.1",
+  "engines": {
+    "node": "8.x"
+  },
+  "description": "Small app for managing company devices",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kronicker/apparatus.git"
+  },
+  "keywords": [
+    "apparatus",
+    "device",
+    "company",
+    "manage"
+  ],
+  "author": "kronicker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kronicker/apparatus/issues"
+  },
+  "homepage": "https://github.com/kronicker/apparatus#readme",
+  "devDependencies": {
+    "eslint": "^4.3.0",
+    "eslint-config-eslint": "^4.0.0"
+  },
+  "dependencies": {
+    "config": "^1.26.1"
+  }
+}
