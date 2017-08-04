@@ -1,10 +1,12 @@
 const config = require('config');
 const express = require('express');
 
-const db = require('./db');
 const log = require('./logger').serverLogger;
 
 const app = express();
+
+require('./db');
+require('./routes')(app);
 
 const port = config.get('server.port');
 app.listen(port, () => {
