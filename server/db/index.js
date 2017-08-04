@@ -5,10 +5,10 @@ const Sequelize = require('sequelize');
 
 const log = require('../logger').serverLogger;
 
-const { dialect, host, user, password, name, pool } = dbConfig;
+const { name, user, password, options } = dbConfig;
 const db = {
   Sequelize,
-  sequelize: new Sequelize(name, user, password, { host, dialect, pool }),
+  sequelize: new Sequelize(name, user, password, options),
   models: {}
 };
 
