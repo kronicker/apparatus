@@ -27,7 +27,7 @@ module.exports = db;
 
 function findModels(directory) {
   return fs.readdirSync(directory)
-  .filter(file => file !== 'index.js');
+    .filter(file => file !== 'index.js');
 }
 
 function importModel(file) {
