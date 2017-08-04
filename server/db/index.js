@@ -11,6 +11,17 @@ const sequelize = new Sequelize(name, user, password, config);
 
 const db = { Sequelize, sequelize, models: {} };
 
+function findModels(directory) {
+  return fs.readdirSync(directory)
+    .filter(file => file !== 'index.js');
+}
+
+function importModel(file) {
+  const model = sequelize.import(path.join(__dirname, file));
+  db.models[model.name] = model;
+  return model;
+}
+
 findModels(__dirname)
   .map(file => importModel(file))
   .map(model => invoke(model, 'associate', db.models));
@@ -24,14 +35,3 @@ db.sequelize.sync()
   .catch(err => log.error('Unable to sync database tables:', err));
 
 module.exports = db;
-
-function findModels(directory) {
-  return fs.readdirSync(directory)
-    .filter(file => file !== 'index.js');
-}
-
-function importModel(file) {
-  const model = sequelize.import(path.join(__dirname, file));
-  db.models[model.name] = model;
-  return model;
-}
