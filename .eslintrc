@@ -12,6 +12,7 @@
   "rules": {
     "indent": 0, // EditorConfig
     "newline-after-var": 0,
+    "no-use-before-define": 0,
     "space-before-function-paren": ["error", {
       "anonymous": "always",
       "named": "never",
