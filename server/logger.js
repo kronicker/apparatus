@@ -1,7 +1,6 @@
 const bunyan = require('bunyan');
-
-const serverLogger = bunyan.createLogger({ name: 'server' });
-
-module.exports = {
-  serverLogger
+const loggers = {
+  server: bunyan.createLogger({ name: 'server' })
 };
+
+module.exports = name => loggers[name];

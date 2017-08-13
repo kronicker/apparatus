@@ -4,7 +4,7 @@ const path = require('path');
 const invoke = require('lodash/invoke');
 const Sequelize = require('sequelize');
 
-const log = require('../logger').serverLogger;
+const log = require('../logger')('server');
 
 const { name, user, password, options } = config;
 const sequelize = new Sequelize(name, user, password, options);

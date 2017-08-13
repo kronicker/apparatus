@@ -1,3 +1,5 @@
+const { DB_LOG = false } = process.env;
+
 module.exports = {
   server: {
     port: 4000
@@ -14,7 +16,7 @@ module.exports = {
         max: 5,
         idle: 10000
       },
-      logging: false
+      logging: DB_LOG
     }
   }
 };
