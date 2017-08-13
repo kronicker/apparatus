@@ -1,24 +1,30 @@
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('Device', {
-    cat_num: {
-      type: DataTypes.STRING,
-      validate: {
-        isNumeric: true,
-        len: 4,
-        min: '0000',
-        max: '9999'
+const { Model } = require('sequelize');
+
+class Device extends Model {
+  static init(sequelize, DataTypes) {
+    const fields = {
+      id: {
+        type: DataTypes.STRING,
+        validate: {
+          isNumeric: true,
+          len: 4,
+          min: '0000',
+          max: '9999'
+        },
+        primaryKey: true,
+        unique: true
       },
-      unique: true
-    },
-    make: DataTypes.STRING,
-    model: DataTypes.STRING,
-    os: DataTypes.STRING,
-    serial: DataTypes.STRING
-  });
+      maker: DataTypes.STRING,
+      model: DataTypes.STRING,
+      os: DataTypes.STRING,
+      serial: DataTypes.STRING
+    };
+    return super.init(fields, { sequelize });
+  }
 
-  User.associate = models => {
-    User.hasMany(models.Liability);
-  };
+  static associate(models) {
+    Device.hasMany(models.Liability);
+  }
+}
 
-  return User;
-};
+module.exports = (sequelize, DataTypes) => Device.init(sequelize, DataTypes);
