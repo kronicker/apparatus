@@ -1,13 +1,13 @@
-let routes = [
-  'device',
-  'user',
-  'liability'
-];
+const { filename, readModules } = require('../lib/utils');
 
-routes = routes.map(route => ({
-  endpoint: route,
-  router: require(`./${route}`)
-}));
+function importRouter(file) {
+  const endpoint = filename(file);
+  const router = require(`./${file}`);
+  return { endpoint, router };
+}
+
+const routes = readModules(__dirname)
+  .map(file => importRouter(file));
 
 module.exports = app => {
   routes.forEach(({ endpoint, router }) => app.use(`/api/${endpoint}`, router));
