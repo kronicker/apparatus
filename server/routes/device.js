@@ -50,10 +50,10 @@ function update(req, res) {
     .then(newDevice => res.send(newDevice));
 }
 
-router.get('/', list);
-router.post('/', create);
-router.get('/:id', get);
-router.delete('/:id', remove);
-router.put('/:id', update);
+router.get('/device', list);
+router.post('/device', create);
+router.get('/device/:id', get);
+router.delete('/device/:id', remove);
+router.put('/device/:id', update);
 
 module.exports = router;

@@ -5,6 +5,6 @@ function check(req, res) {
   res.send('It works!!');
 }
 
-router.get('/', check);
+router.get('/user', check);
 
 module.exports = router;
