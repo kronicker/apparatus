@@ -16,6 +16,10 @@ app.use(helmet());
 require('./db');
 require('./routes')(app);
 
+app.use((err, req, res, next) => {
+  res.status(500).json({ error: err.message });
+});
+
 const port = config.get('server.port');
 app.listen(port, () => {
   log.info(`Server running on port ${port}`);
