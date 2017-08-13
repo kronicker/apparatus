@@ -2,9 +2,10 @@ const { Model } = require('sequelize');
 
 class Device extends Model {
   static init(sequelize, DataTypes) {
+    const { STRING } = DataTypes;
     const fields = {
       id: {
-        type: DataTypes.STRING,
+        type: STRING,
         validate: {
           isNumeric: true,
           len: 4,
@@ -14,10 +15,10 @@ class Device extends Model {
         primaryKey: true,
         unique: true
       },
-      maker: DataTypes.STRING,
-      model: DataTypes.STRING,
-      os: DataTypes.STRING,
-      serial: DataTypes.STRING
+      maker: STRING,
+      model: STRING,
+      os: STRING,
+      serial: STRING
     };
     return super.init(fields, { sequelize });
   }

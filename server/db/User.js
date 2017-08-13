@@ -2,15 +2,16 @@ const { Model } = require('sequelize');
 
 class User extends Model {
   static init(sequelize, DataTypes) {
+    const { STRING } = DataTypes;
     const fields = {
       email: {
-        type: DataTypes.STRING,
+        type: STRING,
         validate: { isEmail: true },
         unique: true
       },
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
-      office: DataTypes.STRING
+      firstName: STRING,
+      lastName: STRING,
+      office: STRING
     };
     return super.init(fields, { sequelize });
   }

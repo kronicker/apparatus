@@ -2,11 +2,12 @@ const { Model } = require('sequelize');
 
 class Liability extends Model {
   static init(sequelize, DataTypes) {
+    const { DATE, ENUM } = DataTypes;
     const fields = {
-      startDate: DataTypes.DATE,
-      endDate: DataTypes.DATE,
+      startDate: DATE,
+      endDate: DATE,
       status: {
-        type: DataTypes.ENUM,
+        type: ENUM,
         values: ['active', 'pending', 'closed']
       }
     };
