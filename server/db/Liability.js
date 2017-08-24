@@ -1,18 +1,23 @@
+const { Model } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
-  const Liability = sequelize.define('Liability', {
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
-    status: {
-      type: DataTypes.ENUM,
-      values: ['active', 'pending', 'closed']
-    }
-  });
+class Liability extends Model {
+  static init(sequelize, DataTypes) {
+    const { DATE, ENUM } = DataTypes;
+    const fields = {
+      startDate: DATE,
+      endDate: DATE,
+      status: {
+        type: ENUM,
+        values: ['active', 'pending', 'closed']
+      }
+    };
+    return super.init(fields, { sequelize });
+  }
 
-  Liability.associate = models => {
+  static associate(models) {
     Liability.belongsTo(models.User);
     Liability.belongsTo(models.Device);
-  };
+  }
+}
 
-  return Liability;
-};
+module.exports = (sequelize, DataTypes) => Liability.init(sequelize, DataTypes);
