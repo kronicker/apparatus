@@ -1,20 +1,24 @@
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    email: {
-      type: DataTypes.STRING,
-      validate: {
-        isEmail: true
+const { Model } = require('sequelize');
+
+class User extends Model {
+  static init(sequelize, DataTypes) {
+    const { STRING } = DataTypes;
+    const fields = {
+      email: {
+        type: STRING,
+        validate: { isEmail: true },
+        unique: true
       },
-      unique: true
-    },
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    office: DataTypes.STRING
-  });
+      firstName: STRING,
+      lastName: STRING,
+      office: STRING
+    };
+    return super.init(fields, { sequelize });
+  }
 
-  User.associate = models => {
+  static associate(models) {
     User.hasMany(models.Liability);
-  };
+  }
+}
 
-  return User;
-};
+module.exports = (sequelize, DataTypes) => User.init(sequelize, DataTypes);
