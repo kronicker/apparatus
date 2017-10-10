@@ -30,7 +30,7 @@ function remove(req, res, next) {
   const id = req.params.id;
 
   const where = { id };
-  return Device.destory({ where })
+  return Device.destroy({ where })
     .then(() => res.end())
     .catch(err => next(err));
 }
