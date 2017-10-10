@@ -1,4 +1,5 @@
 const { Model } = require('sequelize');
+const office = '[a-z][0-9]{1,2}$';
 
 class User extends Model {
   static init(sequelize, DataTypes) {
@@ -7,11 +8,30 @@ class User extends Model {
       email: {
         type: STRING,
         validate: { isEmail: true },
-        unique: true
+        unique: true,
+        allowNull: false
       },
-      firstName: STRING,
-      lastName: STRING,
-      office: STRING
+      firstName: {
+        type: STRING,
+        allowNull: false,
+        validate: {
+          len: [2, 100]
+        }
+      },
+      lastName: {
+        type: STRING,
+        allowNull: false,
+        validate: {
+          len: [2, 100]
+        }
+      },
+      office: {
+        type: STRING,
+        allowNull: false,
+        validate: {
+          is: office
+        }
+      }
     };
     return super.init(fields, { sequelize });
   }
