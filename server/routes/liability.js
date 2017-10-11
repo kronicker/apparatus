@@ -1,18 +1,19 @@
 const router = require('express').Router();
-const { Liability } = require('../db').models;
+const { Liability, Device, User } = require('../db').models;
 
 const DEFAULT_LIMIT = 30;
 
 function create(req, res, next) {
   return Liability.create(req.body)
-    .then(newLiability => res.send(newLiability))
+    .then(liability => res.send(liability))
     .catch(err => next(err));
 }
 
 function get(req, res, next) {
-  const id = req.params.id;
+  const where = { id: req.params.id };
+  const include = [{ model: Device }, { model: User }];
 
-  return Liability.findById(id)
+  return Liability.find({ where, include })
     .then(liability => res.send(liability))
     .catch(err => next(err));
 }
@@ -20,16 +21,17 @@ function get(req, res, next) {
 function list(req, res, next) {
   const limit = Number(req.query.limit) || DEFAULT_LIMIT;
   const offset = Number(req.query.offset) || 0;
+  const where = req.query;
+  const include = [{ model: Device }, { model: User }];
 
-  return Liability.findAll({ limit, offset })
+  return Liability.findAll({ where, limit, offset, include })
     .then(liabilities => res.send(liabilities))
     .catch(err => next(err));
 }
 
 function remove(req, res, next) {
-  const id = req.params.id;
+  const where = { id: req.params.id };
 
-  const where = { id };
   return Liability.destroy({ where })
     .then(() => res.end())
     .catch(err => next(err));
