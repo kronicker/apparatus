@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { User } = require('../db').models;
 
 const DEFAULT_LIMIT = 30;
+const attributes = { exclude: ['password'] };
 
 function create(req, res, next) {
   return User.create(req.body)
@@ -10,9 +11,9 @@ function create(req, res, next) {
 }
 
 function get(req, res, next) {
-  const id = req.params.id;
+  const where = { id: req.params.id };
 
-  return User.findById(id)
+  return User.find({ where, attributes })
     .then(user => res.send(user))
     .catch(err => next(err));
 }
@@ -20,9 +21,9 @@ function get(req, res, next) {
 function list(req, res, next) {
   const limit = Number(req.query.limit) || DEFAULT_LIMIT;
   const offset = Number(req.query.offset) || 0;
-
   const where = req.query;
-  return User.findAll({ where, limit, offset })
+
+  return User.findAll({ where, limit, offset, attributes })
     .then(users => res.send(users))
     .catch(err => next(err));
 }

@@ -1,5 +1,4 @@
 const { Model } = require('sequelize');
-const office = '[a-z][0-9]{1,2}$';
 
 class User extends Model {
   static init(sequelize, DataTypes) {
@@ -14,23 +13,17 @@ class User extends Model {
       firstName: {
         type: STRING,
         allowNull: false,
-        validate: {
-          len: [2, 100]
-        }
+        validate: { len: [2, 100] }
       },
       lastName: {
         type: STRING,
         allowNull: false,
-        validate: {
-          len: [2, 100]
-        }
+        validate: { len: [2, 100] }
       },
-      office: {
+      password: {
         type: STRING,
         allowNull: false,
-        validate: {
-          is: office
-        }
+        validate: { notEmpty: true }
       }
     };
     return super.init(fields, { sequelize });
@@ -38,6 +31,7 @@ class User extends Model {
 
   static associate(models) {
     User.hasMany(models.Liability);
+    User.belongsTo(models.Office);
   }
 }
 
