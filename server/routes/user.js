@@ -18,7 +18,7 @@ function get(req, res, next) {
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     }];
 
-  return User.find({ where, include, attributes })
+  return User.find({ where, include })
     .then(user => res.send(user))
     .catch(err => next(err));
 }
@@ -46,8 +46,8 @@ function update(req, res, next) {
   const id = req.params.id;
 
   return User.findById(id)
-    .then(device => device.update(req.body))
-    .then(device => res.send(device))
+    .then(user => user.update(req.body))
+    .then(user => res.send(user))
     .catch(err => next(err));
 }
 

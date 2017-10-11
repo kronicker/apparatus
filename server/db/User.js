@@ -1,4 +1,5 @@
 const { Model } = require('sequelize');
+const password = require('../lib/password');
 
 class User extends Model {
   static init(sequelize, DataTypes) {
@@ -23,15 +24,36 @@ class User extends Model {
       password: {
         type: STRING,
         allowNull: false,
-        validate: { notEmpty: true }
+        validate: { notEmpty: true },
+        private: true
       }
     };
-    return super.init(fields, { sequelize });
+    const hooks = {
+      beforeCreate(user) {
+        return password.hash(user.password)
+          .then(hash => user.password = hash);
+      },
+      beforeUpdate(user) {
+        if (user.changed('password')) {
+          return password.hash(user.password)
+            .then(hash => user.password = hash);
+        }
+      }
+    };
+    return super.init(fields, { sequelize, hooks });
   }
 
   static associate(models) {
     User.hasMany(models.Liability);
     User.belongsTo(models.Office);
+  }
+
+  // todo rewrite (check all keys, omit private ones)
+
+  toJSON() {
+    const user = super.toJSON();
+    delete user.password;
+    return user;
   }
 }
 
