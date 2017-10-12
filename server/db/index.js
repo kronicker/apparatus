@@ -3,6 +3,7 @@ const { readModules } = require('../lib/utils');
 const path = require('path');
 const invoke = require('lodash/invoke');
 const Sequelize = require('sequelize');
+require('sequelize-virtual-fields')(Sequelize);
 
 const log = require('../logger')('server');
 

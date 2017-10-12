@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const reOffice = /[a-z][0-9]{1,2}$/i;
+const reOffice = /^[A-Z]\d{1,2}$/;
 
 class Office extends Model {
   static init(sequelize, DataTypes) {
@@ -14,8 +14,8 @@ class Office extends Model {
     return super.init(fields, { sequelize });
   }
 
-  static associate(models) {
-    Office.hasMany(models.User);
+  static associate({ User }) {
+    Office.hasMany(User);
   }
 }
 

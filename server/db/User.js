@@ -3,7 +3,9 @@ const password = require('../lib/password');
 
 class User extends Model {
   static init(sequelize, DataTypes) {
-    const { STRING } = DataTypes;
+    sequelize.initVirtualFields();
+    const { Office } = sequelize.models;
+    const { STRING, VIRTUAL } = DataTypes;
     const fields = {
       email: {
         type: STRING,
@@ -14,30 +16,34 @@ class User extends Model {
       firstName: {
         type: STRING,
         allowNull: false,
-        validate: { len: [2, 100] }
+        validate: { len: [2, 128] }
       },
       lastName: {
         type: STRING,
         allowNull: false,
-        validate: { len: [2, 100] }
+        validate: { len: [2, 128] }
       },
       password: {
         type: STRING,
         allowNull: false,
         validate: { notEmpty: true },
         private: true
+      },
+      office: {
+        type: VIRTUAL,
+        get() { return this.Office.name; },
+        include: [{ model: Office, attributes: ['name'] }]
       }
     };
     const hooks = {
       beforeCreate(user) {
         return password.hash(user.password)
-          .then(hash => user.password = hash);
+          .then(hash => (user.password = hash));
       },
       beforeUpdate(user) {
-        if (user.changed('password')) {
-          return password.hash(user.password)
-            .then(hash => user.password = hash);
-        }
+        if (!user.changed('password')) return false;
+        return password.hash(user.password)
+          .then(hash => (user.password = hash));
       }
     };
     return super.init(fields, { sequelize, hooks });
@@ -48,7 +54,7 @@ class User extends Model {
     User.belongsTo(models.Office);
   }
 
-  // todo rewrite (check all keys, omit private ones)
+  // TODO: rewrite (check all keys, omit private ones)
 
   toJSON() {
     const user = super.toJSON();

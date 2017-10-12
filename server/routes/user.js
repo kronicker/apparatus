@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User, Office } = require('../db').models;
+const { User } = require('../db').models;
 
 const DEFAULT_LIMIT = 30;
 const attributes = { exclude: ['password'] };
@@ -12,13 +12,7 @@ function create(req, res, next) {
 
 function get(req, res, next) {
   const where = { id: req.params.id };
-  const include = [
-    {
-      model: Office,
-      attributes: { exclude: ['createdAt', 'updatedAt'] }
-    }];
-
-  return User.find({ where, include })
+  return User.find({ where })
     .then(user => res.send(user))
     .catch(err => next(err));
 }
@@ -34,9 +28,7 @@ function list(req, res, next) {
 }
 
 function remove(req, res, next) {
-  const id = req.params.id;
-
-  const where = { id };
+  const where = { id: req.params.id };
   return User.destroy({ where })
     .then(() => res.end())
     .catch(err => next(err));
@@ -44,7 +36,6 @@ function remove(req, res, next) {
 
 function update(req, res, next) {
   const id = req.params.id;
-
   return User.findById(id)
     .then(user => user.update(req.body))
     .then(user => res.send(user))
