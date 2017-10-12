@@ -2,11 +2,10 @@ const { Model } = require('sequelize');
 const password = require('../lib/utils');
 
 class User extends Model {
-  static init(sequelize, DataTypes) {
-    sequelize.initVirtualFields();
+  static fields(DataTypes, sequelize) {
     const { Office } = sequelize.models;
     const { STRING, VIRTUAL } = DataTypes;
-    const fields = {
+    return {
       email: {
         type: STRING,
         validate: { isEmail: true },
@@ -35,7 +34,10 @@ class User extends Model {
         include: [{ model: Office, attributes: ['name'] }]
       }
     };
-    const hooks = {
+  }
+
+  static hooks() {
+    return {
       beforeCreate(user) {
         return password.hash(user.password)
           .then(hash => (user.password = hash));
@@ -46,12 +48,11 @@ class User extends Model {
           .then(hash => (user.password = hash));
       }
     };
-    return super.init(fields, { sequelize, hooks });
   }
 
-  static associate(models) {
-    User.hasMany(models.Liability);
-    User.belongsTo(models.Office);
+  static associate({ Liability, Office }) {
+    User.hasMany(Liability);
+    User.belongsTo(Office);
   }
 
   // TODO: rewrite (check all keys, omit private ones)
@@ -63,4 +64,4 @@ class User extends Model {
   }
 }
 
-module.exports = (sequelize, DataTypes) => User.init(sequelize, DataTypes);
+module.exports = User;
