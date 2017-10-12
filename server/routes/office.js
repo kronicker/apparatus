@@ -26,18 +26,14 @@ function list(req, res, next) {
 }
 
 function remove(req, res, next) {
-  const id = req.params.id;
-
-  const where = { id };
+  const where = { id: req.params.id };
   return Office.destroy({ where })
     .then(() => res.end())
     .catch(err => next(err));
 }
 
 function update(req, res, next) {
-  const id = req.params.id;
-
-  return Office.findById(id)
+  return Office.findById(req.params.id)
     .then(office => office.update(req.body))
     .then(office => res.send(office))
     .catch(err => next(err));

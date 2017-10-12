@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const password = require('../lib/password');
+const password = require('../lib/utils');
 
 class User extends Model {
   static init(sequelize, DataTypes) {
