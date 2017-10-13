@@ -1,4 +1,6 @@
 const { Model } = require('sequelize');
+const bcrypt = require('bcrypt');
+const get = require('lodash/get');
 const password = require('../lib/utils');
 
 class User extends Model {
@@ -26,22 +28,19 @@ class User extends Model {
       password: {
         type: STRING,
         allowNull: false,
-        validate: { notEmpty: true },
-        private: true
+        validate: {
+          notEmpty: true,
+          len: [6, 100]
+        }
       },
       office: {
         type: VIRTUAL,
-        get() { return this.Office.name; },
+        get() { return get(this, 'Office.name'); },
         include: [{ model: Office, attributes: ['name'] }]
       }
     };
     const hooks = {
-      beforeCreate(user) {
-        return password.hash(user.password)
-          .then(hash => (user.password = hash));
-      },
-      beforeUpdate(user) {
-        if (!user.changed('password')) return false;
+      afterValidate(user) {
         return password.hash(user.password)
           .then(hash => (user.password = hash));
       }
@@ -54,7 +53,9 @@ class User extends Model {
     User.belongsTo(models.Office);
   }
 
-  // TODO: rewrite (check all keys, omit private ones)
+  validPassword(password) {
+    return bcrypt.compare(password, this.password);
+  }
 
   toJSON() {
     const user = super.toJSON();

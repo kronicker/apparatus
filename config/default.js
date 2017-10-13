@@ -4,6 +4,9 @@ module.exports = {
   hash: {
     salt: 8
   },
+  session: {
+    secret: 'l1ClK9xjAp0LzW0hpByT'
+  },
   server: {
     port: 4000
   },
