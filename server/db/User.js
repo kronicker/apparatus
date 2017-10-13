@@ -1,3 +1,4 @@
+const get = require('lodash/get');
 const { Model } = require('sequelize');
 const password = require('../lib/utils');
 
@@ -31,7 +32,7 @@ class User extends Model {
       },
       office: {
         type: VIRTUAL,
-        get() { return this.Office.name; },
+        get() { return get(this, 'Office.name'); },
         include: [{ model: Office, attributes: ['name'] }]
       }
     };
