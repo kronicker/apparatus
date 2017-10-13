@@ -1,9 +1,9 @@
 const { Model } = require('sequelize');
 
 class Device extends Model {
-  static init(sequelize, DataTypes) {
+  static fields(DataTypes) {
     const { STRING } = DataTypes;
-    const fields = {
+    return {
       id: {
         type: STRING,
         validate: {
@@ -20,7 +20,6 @@ class Device extends Model {
       os: STRING,
       serial: STRING
     };
-    return super.init(fields, { sequelize });
   }
 
   static associate(models) {
@@ -28,4 +27,4 @@ class Device extends Model {
   }
 }
 
-module.exports = (sequelize, DataTypes) => Device.init(sequelize, DataTypes);
+module.exports = Device;
