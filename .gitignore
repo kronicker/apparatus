@@ -9,4 +9,5 @@ node_modules/
 # Local config files
 .DS_Store/
 .vscode
+.idea
 config/local*.*

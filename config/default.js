@@ -1,6 +1,9 @@
 const { DB_LOG = false } = process.env;
 
 module.exports = {
+  hash: {
+    salt: 8
+  },
   server: {
     port: 4000
   },
