@@ -1,14 +1,13 @@
-const { Model } = require('sequelize');
 const bcrypt = require('bcrypt');
 const get = require('lodash/get');
-const password = require('../lib/utils');
+const { hash: hashPassword } = require('../lib/utils');
+const { Model } = require('sequelize');
 
 class User extends Model {
-  static init(sequelize, DataTypes) {
-    sequelize.initVirtualFields();
+  static fields(DataTypes, sequelize) {
     const { Office } = sequelize.models;
     const { STRING, VIRTUAL } = DataTypes;
-    const fields = {
+    return {
       email: {
         type: STRING,
         validate: { isEmail: true },
@@ -39,18 +38,20 @@ class User extends Model {
         include: [{ model: Office, attributes: ['name'] }]
       }
     };
-    const hooks = {
+  }
+
+  static hooks() {
+    return {
       afterValidate(user) {
-        return password.hash(user.password)
+        return hashPassword(user.password)
           .then(hash => (user.password = hash));
       }
     };
-    return super.init(fields, { sequelize, hooks });
   }
 
-  static associate(models) {
-    User.hasMany(models.Liability);
-    User.belongsTo(models.Office);
+  static associate({ Liability, Office }) {
+    User.hasMany(Liability);
+    User.belongsTo(Office);
   }
 
   validPassword(password) {
@@ -64,4 +65,4 @@ class User extends Model {
   }
 }
 
-module.exports = (sequelize, DataTypes) => User.init(sequelize, DataTypes);
+module.exports = User;

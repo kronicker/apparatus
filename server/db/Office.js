@@ -2,16 +2,15 @@ const { Model } = require('sequelize');
 const reOffice = /^[A-Z]\d{1,2}$/;
 
 class Office extends Model {
-  static init(sequelize, DataTypes) {
+  static fields(DataTypes) {
     const { STRING } = DataTypes;
-    const fields = {
+    return {
       name: {
         type: STRING,
         allowNull: false,
         validate: { is: reOffice }
       }
     };
-    return super.init(fields, { sequelize });
   }
 
   static associate({ User }) {
@@ -19,4 +18,4 @@ class Office extends Model {
   }
 }
 
-module.exports = (sequelize, DataTypes) => Office.init(sequelize, DataTypes);
+module.exports = Office;
