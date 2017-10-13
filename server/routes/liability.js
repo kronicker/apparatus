@@ -24,7 +24,7 @@ function list(req, res, next) {
   const offset = Number(req.query.offset) || 0;
   const where = req.query;
 
-  return Liability.findAll({ where, limit, offset, include: include(Device, User) })
+  return Liability.findAll({ where, include: include(Device, User), limit, offset })
     .then(liabilities => res.send(liabilities))
     .catch(err => next(err));
 }
