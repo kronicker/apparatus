@@ -3,6 +3,10 @@ const { Liability, Device, User } = require('../db').models;
 
 const DEFAULT_LIMIT = 30;
 
+function include(...models) {
+  return models.map(model => ({ model, as: model.name.toLowerCase() }));
+}
+
 function create(req, res, next) {
   return Liability.create(req.body)
     .then(liability => res.send(liability))
@@ -11,9 +15,8 @@ function create(req, res, next) {
 
 function get(req, res, next) {
   const where = { id: req.params.id };
-  const include = [{ model: Device }, { model: User }];
 
-  return Liability.find({ where, include })
+  return Liability.find({ where, include: include(Device, User) })
     .then(liability => res.send(liability))
     .catch(err => next(err));
 }
@@ -22,9 +25,8 @@ function list(req, res, next) {
   const limit = Number(req.query.limit) || DEFAULT_LIMIT;
   const offset = Number(req.query.offset) || 0;
   const where = req.query;
-  const include = [{ model: Device }, { model: User }];
 
-  return Liability.findAll({ where, limit, offset, include })
+  return Liability.findAll({ where, limit, offset, include: include(Device, User) })
     .then(liabilities => res.send(liabilities))
     .catch(err => next(err));
 }
