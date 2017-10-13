@@ -14,9 +14,7 @@ function create(req, res, next) {
 }
 
 function get(req, res, next) {
-  const where = { id: req.params.id };
-
-  return Liability.find({ where, include: include(Device, User) })
+  return Liability.findById(req.params.id, { include: include(Device, User) })
     .then(liability => res.send(liability))
     .catch(err => next(err));
 }
