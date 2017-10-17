@@ -14,9 +14,10 @@ app.use(morgan('short'));
 app.use(helmet());
 
 require('./db');
+require('./auth')(app);
 require('./routes')(app);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.status(500).json({ error: err.message });
 });
 

@@ -1,6 +1,7 @@
+const bcrypt = require('bcrypt');
 const get = require('lodash/get');
+const { hash: hashPassword } = require('../lib/utils');
 const { Model } = require('sequelize');
-const password = require('../lib/utils');
 
 class User extends Model {
   static fields(DataTypes, sequelize) {
@@ -26,8 +27,10 @@ class User extends Model {
       password: {
         type: STRING,
         allowNull: false,
-        validate: { notEmpty: true },
-        private: true
+        validate: {
+          notEmpty: true,
+          len: [6, 100]
+        }
       },
       office: {
         type: VIRTUAL,
@@ -39,13 +42,8 @@ class User extends Model {
 
   static hooks() {
     return {
-      beforeCreate(user) {
-        return password.hash(user.password)
-          .then(hash => (user.password = hash));
-      },
-      beforeUpdate(user) {
-        if (!user.changed('password')) return false;
-        return password.hash(user.password)
+      afterValidate(user) {
+        return hashPassword(user.password)
           .then(hash => (user.password = hash));
       }
     };
@@ -56,7 +54,9 @@ class User extends Model {
     User.belongsTo(Office);
   }
 
-  // TODO: rewrite (check all keys, omit private ones)
+  validPassword(password) {
+    return bcrypt.compare(password, this.password);
+  }
 
   toJSON() {
     const user = super.toJSON();
